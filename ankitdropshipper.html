@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Ankit the Dropshipper - Online Courses</title>
+<!-- Google Fonts -->
+<link
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+  rel="stylesheet"
+/>
+<!-- Material Icons -->
+<link
+  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+  rel="stylesheet"
+/>
+<style>
+  /* Reset & base */
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #374151;
+    background-color: #fff;
+    min-height: 100vh;
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+  /* Scrollbar for cart modal */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #6b7280;
+    border-radius: 4px;
+  }
+
+  /* Floating top text */
+  .top-banner {
+    position: sticky;
+    top: 0;
+    text-align: center;
+    background: #f9fafb;
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: #6b7280;
+    padding: 8px 0;
+    z-index: 1100;
+    animation: floatText 3s ease-in-out infinite;
+  }
+  @keyframes floatText {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-6px);
+    }
+  }
+
+  /* Header styling */
+  header {
+    position: sticky;
+    top: 36px; /* below floating text */
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+    border-bottom: 1px solid #e5e7eb;
+    z-index: 1100;
+  }
+  .logo {
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: #111827;
+    user-select: none;
+  }
+  nav {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+  nav a {
+    font-weight: 600;
+    color: #374151;
+    padding: 6px 0;
+    position: relative;
+  }
+  nav a:focus-visible,
+  nav a:hover {
+    color: #2563eb;
+  }
+  nav a::after {
+    content: '';
+    display: block;
+    width: 0%;
+    height: 2px;
+    background: #2563eb;
+    transition: width 0.3s ease;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+  }
+  nav a:hover::after,
+  nav a:focus-visible::after {
+    width: 100%;
+  }
+  /* Hamburger menu */
+  .hamburger {
+    display: none;
+    cursor: pointer;
+    font-size: 2rem;
+    color: #374151;
+    user-select: none;
+  }
+  .material-symbols-outlined.md-36 {
+    font-size: 36px;
+  }
+
+  /* Cart icon */
+  .cart-button {
+    position: relative;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #374151;
+    font-size: 2rem;
+  }
+  .cart-badge {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    background-color: #ef4444;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    height: 18px;
+    min-width: 18px;
+    border-radius: 9999px;
+    text-align: center;
+    line-height: 18px;
+    padding: 0 6px;
+    user-select: none;
+  }
+
+  /* Mobile nav panel */
+  #mobile-nav {
+    position: fixed;
+    top: 96px; /* below floating and header */
+    right: 0;
+    width: 260px;
+    height: calc(100% - 96px);
+    background: white;
+    box-shadow: -6px 0 15px rgba(0,0,0, 0.2);
+    padding: 2rem 1.5rem;
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    z-index: 1200;
+  }
+  #mobile-nav.open {
+    transform: translateX(0);
+  }
+  #mobile-nav a {
+    color: #374151;
+    font-weight: 600;
+    font-size: 1.25rem;
+  }
+  #mobile-nav a:focus-visible,
+  #mobile-nav a:hover {
+    color: #2563eb;
+  }
+  #mobile-nav-close {
+    align-self: flex-end;
+    font-size: 2rem;
+    cursor: pointer;
+    border: none;
+    background: none;
+    color: #374151;
+  }
+
+  /* Main Catalog */
+  main {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  /* Sidebar for tablet+ */
+  .sidebar {
+    display: none;
+    flex-direction: column;
+    gap: 1rem;
+    border-right: 1px solid #e5e7eb;
+    padding-right: 1rem;
+  }
+
+  /* Course grid */
+  .course-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .course-card {
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 14px rgb(0 0 0 / 0.05);
+    background: #fff;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: box-shadow 0.3s ease;
+  }
+  .course-card:hover,
+  .course-card:focus-within {
+    box-shadow: 0 8px 28px rgb(0 0 0 / 0.1);
+  }
+  .course-image {
+    border-radius: 0.75rem;
+    overflow: hidden;
+  }
+  .course-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 0.75rem;
+  }
+  .course-content {
+    margin-top: 1rem;
+    flex-grow: 1;
+  }
+  .course-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+    color: #1f2937;
+  }
+  .course-desc {
+    font-size: 0.9rem;
+    color: #6b7280;
+    margin-bottom: 0.5rem;
+  }
+  .course-price {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #111827;
+    margin-bottom: 1rem;
+  }
+  /* Buttons side by side */
+  .btn-group {
+    display: flex;
+    gap: 0.75rem;
+  }
+  button.buy-now,
+  button.add-cart {
+    flex: 1;
+    padding: 0.6rem 0;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  button.buy-now {
+    background-color: #2563eb;
+    color: white;
+  }
+  button.buy-now:hover,
+  button.buy-now:focus-visible {
+    background-color: #1e40af;
+    outline: none;
+    transform: scale(1.05);
+  }
+  button.add-cart {
+    background-color: #dbeafe;
+    color: #2563eb;
+  }
+  button.add-cart:hover,
+  button.add-cart:focus-visible {
+    background-color: #bfdbfe;
+    outline: none;
+    transform: scale(1.05);
+  }
+
+  /* Responsive grid adjustments */
+  @media (min-width: 640px) {
+    main {
+      grid-template-columns: 1fr 3fr;
+      gap: 2rem;
+      padding: 0 2rem;
+    }
+    .sidebar {
+      display: flex;
+    }
+    .course-list {
+      grid-template-columns: repeat(auto-fill, minmax(280px,1fr));
+    }
+  }
+  @media (min-width: 1024px) {
+    main {
+      grid-template-columns: 250px 1fr 300px;
+      gap: 3rem;
+    }
+    .course-list {
+      grid-template-columns: repeat(auto-fill, minmax(300px,1fr));
+    }
+  }
+
+  /* Sidebar filter example */
+  .sidebar h2 {
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: #111827;
+  }
+  .category-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .category-list li {
+    margin-bottom: 0.5rem;
+  }
+  .category-list input[type="checkbox"] {
+    margin-right: 0.5rem;
+    cursor: pointer;
+  }
+  .category-list label {
+    cursor: pointer;
+  }
+
+  /* Footer styling */
+  footer {
+    background-color: #f3f4f6;
+    padding: 2rem 1rem;
+    margin-top: 3rem;
+    font-size: 0.9rem;
+    color: #6b7280;
+  }
+  .footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+    gap: 2rem;
+    padding: 0 1rem;
+  }
+  .footer-section h3 {
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: #374151;
+  }
+  .footer-section ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .footer-section li {
+    margin-bottom: 0.5rem;
+  }
+  .footer-section a {
+    color: #6b7280;
+    text-decoration: none;
+  }
+  .footer-section a:hover,
+  .footer-section a:focus-visible {
+    text-decoration: underline;
+    outline: none;
+  }
+
+  /* Footer Accordion on Mobile */
+  @media (max-width: 639px) {
+    .footer-container {
+      display: block;
+    }
+    .footer-section {
+      border-top: 1px solid #e5e7eb;
+    }
+    .footer-section > h3 {
+      padding: 0.75rem 0;
+      margin: 0;
+      cursor: pointer;
+      position: relative;
+      user-select: none;
+    }
+    .footer-section > h3::after {
+      content: '▸';
+      position: absolute;
+      right: 0;
+      font-weight: 700;
+      transition: transform 0.3s ease;
+    }
+    .footer-section.open > h3::after {
+      transform: rotate(90deg);
+    }
+    .footer-section ul {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+      padding-left: 1rem;
+      margin-bottom: 1rem;
+    }
+    .footer-section.open ul {
+      max-height: 500px;
+    }
+  }
+
+  /* Modals common */
+  .modal-backdrop {
+    background: rgba(0,0,0,0.5);
+    position: fixed;
+    inset: 0;
+    z-index: 1300;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+  .modal-backdrop.active {
+    display: flex;
+  }
+  .modal {
+    background: white;
+    max-width: 400px;
+    width: 100%;
+    border-radius: 1rem;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+    padding: 1.5rem 2rem;
+    text-align: center;
+    position: relative;
+  }
+  .modal h2 {
+    margin-top: 0;
+    color: #1f2937;
+  }
+  .modal p {
+    color: #4b5563;
+    margin-bottom: 1.5rem;
+  }
+  .modal button {
+    background: #2563eb;
+    color: white;
+    font-weight: 600;
+    padding: 0.7rem 1.5rem;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.2s ease;
+  }
+  .modal button:hover,
+  .modal button:focus-visible {
+    background-color: #1e40af;
+    outline: none;
+  }
+  .modal-close {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.75rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #6b7280;
+  }
+  .modal-close:hover,
+  .modal-close:focus-visible {
+    color: #2563eb;
+    outline: none;
+  }
+
+  /* Cart modal */
+  .cart-items {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: 1rem;
+  }
+  .cart-item {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    align-items: center;
+  }
+  .cart-item img {
+    width: 64px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: 0.5rem;
+  }
+  .cart-item-info {
+    flex-grow: 1;
+  }
+  .cart-item-title {
+    font-weight: 600;
+    font-size: 1rem;
+    color: #111827;
+  }
+  .cart-item-price {
+    color: #6b7280;
+    font-size: 0.9rem;
+  }
+  .cart-item-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .cart-item-controls button {
+    background: #e5e7eb;
+    border: none;
+    border-radius: 0.25rem;
+    width: 24px;
+    height: 24px;
+    font-weight: 700;
+    font-size: 1rem;
+    color: #4b5563;
+    cursor: pointer;
+  }
+  .cart-item-controls span {
+    min-width: 24px;
+    text-align: center;
+    font-weight: 600;
+  }
+  .cart-total {
+    font-weight: 700;
+    font-size: 1.2rem;
+    text-align: right;
+    margin-bottom: 1rem;
+    color: #111827;
+  }
+
+  /* Accessibility focus outline */
+  :focus-visible {
+    outline: 2.5px solid #2563eb;
+    outline-offset: 2px;
+  }
+</style>
+</head>
+<body>
+  <!-- Floating top text -->
+  <div class="top-banner" aria-live="polite">
+    Ankit the Dropshipper
+  </div>
+  <header role="banner">
+    <div class="logo" aria-label="Brand logo text">Ankit the Dropshipper</div>
+    <nav role="navigation" aria-label="Primary navigation">
+      <a href="#" tabindex="0">Home</a>
+      <a href="#" tabindex="0">Courses</a>
+      <a href="#" tabindex="0">About</a>
+      <a href="#" tabindex="0">Contact</a>
+    </nav>
+    <button class="hamburger" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobile-nav" id="hamburger-btn">
+      <span class="material-symbols-outlined">menu</span>
+    </button>
+    <button class="cart-button" aria-label="Open shopping cart" id="cart-btn" aria-haspopup="dialog" aria-expanded="false">
+      <span class="material-symbols-outlined md-36">shopping_cart</span>
+      <span class="cart-badge" id="cart-badge" aria-live="polite" aria-atomic="true">0</span>
+    </button>
+  </header>
+
+  <!-- Mobile nav -->
+  <nav id="mobile-nav" tabindex="-1" aria-label="Mobile navigation" aria-hidden="true">
+    <button id="mobile-nav-close" aria-label="Close navigation menu">&times;</button>
+    <a href="#" tabindex="0">Home</a>
+    <a href="#" tabindex="0">Courses</a>
+    <a href="#" tabindex="0">About</a>
+    <a href="#" tabindex="0">Contact</a>
+  </nav>
+
+  <main role="main">
+    <aside class="sidebar" aria-label="Course filters">
+      <h2>Categories</h2>
+      <ul class="category-list">
+        <li><label><input type="checkbox" name="cat" value="programming" /> Programming</label></li>
+        <li><label><input type="checkbox" name="cat" value="design" /> Design</label></li>
+        <li><label><input type="checkbox" name="cat" value="marketing" /> Marketing</label></li>
+        <li><label><input type="checkbox" name="cat" value="business" /> Business</label></li>
+      </ul>
+    </aside>
+    <section class="course-list" aria-label="Course catalog" id="course-list">
+      <!-- Course cards injected by JS -->
+    </section>
+  </main>
+
+  <!-- Cart Modal -->
+  <div class="modal-backdrop" id="cart-modal" role="dialog" aria-modal="true" aria-labelledby="cart-modal-title" aria-hidden="true" tabindex="-1">
+    <div class="modal">
+      <button class="modal-close" id="cart-close" aria-label="Close shopping cart">&times;</button>
+      <h2 id="cart-modal-title">Shopping Cart</h2>
+      <div class="cart-items" id="cart-items" tabindex="0" aria-live="polite" aria-relevant="additions removals"></div>
+      <div class="cart-total" id="cart-total"></div>
+      <button id="checkout-btn">Checkout with PhonePe</button>
+    </div>
+  </div>
+
+  <!-- Payment Modal -->
+  <div class="modal-backdrop" id="payment-modal" role="dialog" aria-modal="true" aria-labelledby="payment-modal-title" aria-hidden="true" tabindex="-1">
+    <div class="modal">
+      <button class="modal-close" id="payment-close" aria-label="Close payment modal">&times;</button>
+      <h2 id="payment-modal-title">PhonePe Payment</h2>
+      <p>Thank you for choosing PhonePe! Please scan the QR code below with your PhonePe app to complete the payment securely.</p>
+      <img src="https://i.ibb.co/x8G0HYc3/Send-Payment-Proof.png" alt="Send-Payment-Proof" border="0"></a> 
+      <button id="payment-done-btn">Done</button>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-container">
+      <section class="footer-section" tabindex="0">
+        <h3 tabindex="0">Company</h3>
+        <ul>
+          <li><a href="#" tabindex="0">Privacy Policy</a></li>
+          <li><a href="#" tabindex="0">Terms of Service</a></li>
+          <li><a href="#" tabindex="0">Contact Info</a></li>
+        </ul>
+      </section>
+      <section class="footer-section" tabindex="0">
+        <h3 tabindex="0">Support</h3>
+        <ul>
+          <li><a href="#" tabindex="0">Help Center</a></li>
+          <li><a href="#" tabindex="0">FAQs</a></li>
+        </ul>
+      </section>
+      <section class="footer-section" tabindex="0">
+        <h3 tabindex="0">Follow Us</h3>
+        <ul>
+          <li><a href="#" tabindex="0">Facebook</a></li>
+          <li><a href="#" tabindex="0">Twitter</a></li>
+          <li><a href="#" tabindex="0">Instagram</a></li>
+        </ul>
+      </section>
+    </div>
+  </footer>
+
+<script>
+  (function () {
+    "use strict";
+
+    // Sample course data
+    const courses = [
+      {
+        id: 'course1',
+        title: "Mastering JavaScript",
+        desc: "Comprehensive JavaScript course for beginners to advanced programmers.",
+        price: 999,
+        category: "programming",
+        imgSrc: "https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/5102523e-04ba-4dc5-bbaf-2d8aa6662af4.png",
+        imgAlt: "Modern laptop screen displaying JavaScript code"
+      },
+      {
+        id: 'course2',
+        title: "UI/UX Design Essentials",
+        desc: "Learn the fundamentals of user interface and user experience design.",
+        price: 799,
+        category: "design",
+        imgSrc: "https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/ed63b094-014a-4237-85ec-9dd0796bb19b.png",
+        imgAlt: "Stylized workspace with wireframes and design sketches"
+      },
+      {
+        id: 'course3',
+        title: "Digital Marketing 101",
+        desc: "Kickstart your marketing career with effective digital strategies.",
+        price: 699,
+        category: "marketing",
+        imgSrc: "https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/cd1c2679-3ede-4cd0-a28f-62091e266c19.png",
+        imgAlt: "Person analyzing marketing analytics charts on screen"
+      },
+      {
+        id: 'course4',
+        title: "Entrepreneurship for Beginners",
+        desc: "Step-by-step guide to launching your own successful business.",
+        price: 899,
+        category: "business",
+        imgSrc: "https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/7f11f0da-d736-40b4-810c-3b7467a8eb82.png",
+        imgAlt: "Hands held together forming a small plant symbolizing growth"
+      },
+      {
+        id: 'course5',
+        title: "Advanced Python Programming",
+        desc: "Deep dive into Python with projects and real-world applications.",
+        price: 1099,
+        category: "programming",
+        imgSrc: "https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/67e5924f-f936-40c2-a338-a783656e9cff.png",
+        imgAlt: "Person coding Python on multiple monitors"
+      },
+      {
+        id: 'course6',
+        title: "Graphic Design Masterclass",
+        desc: "Become a pro graphic designer mastering Adobe tools and concepts.",
+        price: 899,
+        category: "design",
+        imgSrc: "https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/c47397b1-ec21-4c84-adea-d697cdcffbd6.png",
+        imgAlt: "Colorful graphic artworks on a computer screen"
+      }
+    ];
+
+    // DOM Elements
+    const courseListEl = document.getElementById('course-list');
+    const cartBadgeEl = document.getElementById('cart-badge');
+    const cartBtn = document.getElementById('cart-btn');
+    const cartModal = document.getElementById('cart-modal');
+    const cartCloseBtn = document.getElementById('cart-close');
+    const cartItemsEl = document.getElementById('cart-items');
+    const cartTotalEl = document.getElementById('cart-total');
+    const checkoutBtn = document.getElementById('checkout-btn');
+    const paymentModal = document.getElementById('payment-modal');
+    const paymentCloseBtn = document.getElementById('payment-close');
+    const paymentDoneBtn = document.getElementById('payment-done-btn');
+    const hamburgerBtn = document.getElementById('hamburger-btn');
+    const mobileNav = document.getElementById('mobile-nav');
+    const mobileNavCloseBtn = document.getElementById('mobile-nav-close');
+    const categories = document.querySelectorAll('.category-list input[type="checkbox"]');
+
+    // LocalStorage key
+    const STORAGE_KEY = 'ankit_dropshipper_cart';
+
+    // Shopping Cart state
+    let cart = {};
+
+    // Load cart from localStorage
+    function loadCart() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        try {
+          cart = JSON.parse(saved);
+        } catch {
+          cart = {};
+        }
+      } else {
+        cart = {};
+      }
+    }
+
+    // Save cart to localStorage
+    function saveCart() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
+    }
+
+    // Calculate total cart count
+    function getCartCount() {
+      return Object.values(cart).reduce((sum, qty) => sum + qty, 0);
+    }
+
+    // Calculate total price
+    function getCartTotalPrice() {
+      let total = 0;
+      for (const courseId in cart) {
+        const course = courses.find(c => c.id === courseId);
+        if (course) {
+          total += course.price * cart[courseId];
+        }
+      }
+      return total;
+    }
+
+    // Update cart badge
+    function updateCartBadge() {
+      const count = getCartCount();
+      cartBadgeEl.textContent = count;
+      if (count === 0) {
+        cartBadgeEl.style.display = 'none';
+        cartBtn.setAttribute('aria-label', 'Shopping cart is empty');
+      } else {
+        cartBadgeEl.style.display = 'inline-block';
+        cartBtn.setAttribute('aria-label', `Shopping cart with ${count} item${count>1?'s':''}`);
+      }
+    }
+
+    // Render courses with optional category filter
+    function renderCourses(filterCategories = []) {
+      courseListEl.innerHTML = '';
+      const filteredCourses = (filterCategories.length === 0)
+        ? courses
+        : courses.filter(c => filterCategories.includes(c.category));
+      if(filteredCourses.length === 0){
+        courseListEl.innerHTML = '<p>No courses found for selected categories.</p>';
+        return;
+      }
+      filteredCourses.forEach(course => {
+        const card = document.createElement('article');
+        card.className = 'course-card';
+        card.setAttribute('tabindex', '0');
+        card.setAttribute('aria-labelledby', `title-${course.id}`);
+        card.innerHTML = `
+          <div class="course-image">
+            <img
+              src="${course.imgSrc}"
+              alt="${course.imgAlt}"
+              loading="lazy"
+              width="600"
+              height="400"
+            />
+          </div>
+          <div class="course-content">
+            <h3 class="course-title" id="title-${course.id}">${course.title}</h3>
+            <p class="course-desc">${course.desc}</p>
+            <p class="course-price">&#8377; ${course.price.toLocaleString('en-IN')}</p>
+            <div class="btn-group">
+              <button class="buy-now" data-id="${course.id}" aria-label="Buy now ${course.title}">Buy Now</button>
+              <button class="add-cart" data-id="${course.id}" aria-label="Add ${course.title} to cart">Add to Cart</button>
+            </div>
+          </div>
+        `;
+        courseListEl.appendChild(card);
+      });
+
+      // Attach listeners for new buttons
+      attachCourseButtonListeners();
+    }
+
+    // Add item to cart
+    function addToCart(courseId) {
+      if (!cart[courseId]) {
+        cart[courseId] = 0;
+      }
+      cart[courseId]++;
+      saveCart();
+      updateCartBadge();
+    }
+
+    // Remove item from cart
+    function removeFromCart(courseId) {
+      if (cart[courseId]) {
+        cart[courseId]--;
+        if (cart[courseId] <= 0) {
+          delete cart[courseId];
+        }
+        saveCart();
+        updateCartBadge();
+      }
+    }
+
+    // Render cart modal content
+    function renderCart() {
+      cartItemsEl.innerHTML = '';
+      const cartEntries = Object.entries(cart);
+      if (cartEntries.length === 0) {
+        cartItemsEl.innerHTML = '<p>Your cart is empty.</p>';
+        cartTotalEl.textContent = '';
+        checkoutBtn.disabled = true;
+        checkoutBtn.setAttribute('aria-disabled', 'true');
+        return;
+      }
+      checkoutBtn.disabled = false;
+      checkoutBtn.removeAttribute('aria-disabled');
+      cartEntries.forEach(([courseId, qty]) => {
+        const course = courses.find(c => c.id === courseId);
+        if (!course) return;
+        const itemEl = document.createElement('div');
+        itemEl.className = 'cart-item';
+        itemEl.innerHTML = `
+          <img src="${course.imgSrc}" alt="${course.imgAlt}" loading="lazy" width="64" height="48" />
+          <div class="cart-item-info">
+            <div class="cart-item-title">${course.title}</div>
+            <div class="cart-item-price">&#8377; ${course.price.toLocaleString('en-IN')} x ${qty}</div>
+          </div>
+          <div class="cart-item-controls" role="group" aria-label="Quantity controls for ${course.title}">
+            <button aria-label="Decrease quantity of ${course.title}" data-id="${courseId}" class="cart-decrease">−</button>
+            <span>${qty}</span>
+            <button aria-label="Increase quantity of ${course.title}" data-id="${courseId}" class="cart-increase">+</button>
+          </div>
+        `;
+        cartItemsEl.appendChild(itemEl);
+      });
+      cartTotalEl.textContent = `Total: ₹${getCartTotalPrice().toLocaleString('en-IN')}`;
+      attachCartControlListeners();
+    }
+
+    // Attach listeners to course buttons
+    function attachCourseButtonListeners() {
+      document.querySelectorAll('button.add-cart').forEach(button => {
+        button.onclick = e => {
+          const id = e.currentTarget.dataset.id;
+          addToCart(id);
+          alert('Course added to cart!');
+        };
+      });
+
+      document.querySelectorAll('button.buy-now').forEach(button => {
+        button.onclick = e => {
+          const id = e.currentTarget.dataset.id;
+          openPaymentModal(id);
+        };
+      });
+    }
+
+    // Attach listeners to cart quantity buttons
+    function attachCartControlListeners() {
+      document.querySelectorAll('.cart-decrease').forEach(button => {
+        button.onclick = e => {
+          const id = e.currentTarget.dataset.id;
+          removeFromCart(id);
+          renderCart();
+        };
+      });
+      document.querySelectorAll('.cart-increase').forEach(button => {
+        button.onclick = e => {
+          const id = e.currentTarget.dataset.id;
+          addToCart(id);
+          renderCart();
+        };
+      });
+    }
+
+    // Open cart modal
+    function openCart() {
+      renderCart();
+      cartModal.classList.add('active');
+      cartModal.setAttribute('aria-hidden', 'false');
+      cartBtn.setAttribute('aria-expanded', 'true');
+      cartModal.querySelector('.modal').focus();
+    }
+    // Close cart modal
+    function closeCart() {
+      cartModal.classList.remove('active');
+      cartModal.setAttribute('aria-hidden', 'true');
+      cartBtn.setAttribute('aria-expanded', 'false');
+      cartBtn.focus();
+    }
+
+    // Open payment modal with optional courseId context
+    function openPaymentModal(courseId = null) {
+      paymentModal.classList.add('active');
+      paymentModal.setAttribute('aria-hidden', 'false');
+      // Optionally tailor payment text if desired
+      paymentModal.querySelector('.modal').focus();
+    }
+    // Close payment modal
+    function closePaymentModal() {
+      paymentModal.classList.remove('active');
+      paymentModal.setAttribute('aria-hidden', 'true');
+      // Return focus to cart or Buy Now button
+      if (cartModal.classList.contains('active')) {
+        cartModal.querySelector('.modal').focus();
+      } else {
+        document.activeElement.blur();
+      }
+    }
+
+    // Toggle mobile nav open/close
+    function openMobileNav() {
+      mobileNav.classList.add('open');
+      mobileNav.setAttribute('aria-hidden', 'false');
+      hamburgerBtn.setAttribute('aria-expanded', 'true');
+      mobileNav.querySelector('a').focus();
+    }
+    function closeMobileNav() {
+      mobileNav.classList.remove('open');
+      mobileNav.setAttribute('aria-hidden', 'true');
+      hamburgerBtn.setAttribute('aria-expanded', 'false');
+      hamburgerBtn.focus();
+    }
+
+    // Filter courses by category
+    function filterCourses() {
+      const selectedCategories = Array.from(categories)
+        .filter(cb => cb.checked)
+        .map(cb => cb.value);
+      renderCourses(selectedCategories);
+    }
+
+    // Footer accordion behavior for mobile
+    const footerSections = document.querySelectorAll('footer .footer-section h3');
+    footerSections.forEach(h3 => {
+      h3.addEventListener('click', () => {
+        const section = h3.parentElement;
+        section.classList.toggle('open');
+      });
+      // Keyboard accessibility for accordion toggle
+      h3.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          h3.click();
+        }
+      });
+    });
+
+    // Event Listeners
+    cartBtn.onclick = () => openCart();
+    cartCloseBtn.onclick = () => closeCart();
+    checkoutBtn.onclick = () => {
+      closeCart();
+      openPaymentModal();
+    };
+    paymentCloseBtn.onclick = () => closePaymentModal();
+    paymentDoneBtn.onclick = () => closePaymentModal();
+
+    hamburgerBtn.onclick = () => openMobileNav();
+    mobileNavCloseBtn.onclick = () => closeMobileNav();
+
+    // Close modals on ESC and trap focus
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        if (cartModal.classList.contains('active')) {
+          closeCart();
+        }
+        if (paymentModal.classList.contains('active')) {
+          closePaymentModal();
+        }
+        if (mobileNav.classList.contains('open')) {
+          closeMobileNav();
+        }
+      }
+    });
+
+    // Filter categories onchange
+    categories.forEach(cb => cb.addEventListener('change', filterCourses));
+
+    // Initialize:
+    loadCart();
+    updateCartBadge();
+    renderCourses();
+
+  })();
+</script>
+</body>
+</html>
+
